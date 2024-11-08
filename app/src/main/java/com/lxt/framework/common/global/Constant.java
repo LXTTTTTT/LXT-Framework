@@ -2,12 +2,7 @@ package com.lxt.framework.common.global;
 
 // 项目使用的全局常量
 public class Constant {
-// 路由路径 ---------------------------------------------------------
-    public static final String MAIN_ACTIVITY = "/main/activity/main";
-    public static final String SPLASH_ACTIVITY = "/main/activity/splash";
-    public static final String TEST_ACTIVITY = "/main/activity/test";
-    public static final String TEST2_ACTIVITY = "/main/activity/test2";
-    public static final String TEST3_ACTIVITY = "/main/activity/test3";
+
 // 通用常量 ---------------------------------------------------------
     public static final String PLATFORM_IDENTIFIER = "110110110";  // 平台标识
     public static final int DEFAULT_PLATFORM_NUMBER = 15950044;  // 默认平台号码
@@ -37,11 +32,10 @@ public class Constant {
     public static final String SEARCH_HISTORY_INFO = "search_history_info";  // 搜索历史缓存
 
     public static final String FILE_VIDEO_LIST = "json/video_list.json";  // 视频列表数据json文件
-// 权限请求 ---------------------------------------------------------
-    // 必要权限 --------------------------------------------
+// 网络请求 ---------------------------------------------------------
+    public static final String BASE_URL = "https://www.wanandroid.com";
+    public static final String PATH_HOTKEY = "/hotkey/json";
 
-    // 请求码 ----------------------------------------------
-    public static final int REQUEST_CODE_LOCATION = 6660;
 // 数据库 ----------------------------------------------------------
     public static final String DATABASE_NAME = "lxt_database";  // 数据库名称
     public static final String TABLE_VIDEO_LIST = "table_video_list";  // 视频列表缓存表

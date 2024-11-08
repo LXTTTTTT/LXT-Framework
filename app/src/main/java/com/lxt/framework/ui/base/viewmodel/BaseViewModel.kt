@@ -1,8 +1,10 @@
 package com.lxt.framework.ui.base.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lxt.framework.common.utils.GlobalControlUtils
 import com.lxt.framework.data.model.common.Status
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -10,11 +12,17 @@ import kotlin.coroutines.CoroutineContext
 
 
 abstract class BaseViewModel<D> : ViewModel() {
+    val TAG:String = javaClass.simpleName
     val mainDispatcher : CoroutineContext by lazy { Dispatchers.Main }
     val ioDispatcher : CoroutineContext by lazy { Dispatchers.IO }
     val cpuDispatcher : CoroutineContext by lazy { Dispatchers.Default }
-    val dataStatus : MutableLiveData<Status<D>> = MutableLiveData()  // 数据状态
+    val dataStatus : MutableLiveData<Status<D>> = MutableLiveData()  // 主要加载的数据的状态
 
+    fun launchInScope(something:()->Unit){
+        viewModelScope.launch{
+            something.invoke()
+        }
+    }
 
     fun <T> launchUIWithResult(
         responseBlock: suspend () -> T?,  // 挂起函数拿到数据：无输入 → 输出T
@@ -66,7 +74,24 @@ abstract class BaseViewModel<D> : ViewModel() {
             .launchIn(scope)
     }
 
-    // 如果这个viewmodel使用了强引用来持有某些对象则需要手动释放资源
+    fun loge(log: String?) {
+        Log.e(TAG, log!!)
+    }
+
+    fun showToast(content: Any, length: Int){
+        if(content is String){
+            GlobalControlUtils.showToast(content,length)
+        }
+        else if(content is Int){
+            GlobalControlUtils.showToast(content,length)
+        }
+        else{
+            loge("illegal parameter")
+        }
+    }
+
+
+    // 如果这个viewmodel使用了强引用(不建议)来持有某些对象则需要手动释放资源
     abstract fun release()
     override fun onCleared() {
         release()

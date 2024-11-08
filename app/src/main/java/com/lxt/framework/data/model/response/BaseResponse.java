@@ -4,15 +4,15 @@ package com.lxt.framework.data.model.response;
 public class BaseResponse<T> {
 
     public T data = null;
-    public int code = 0;
+    public int errorCode = 0;
     public String errorMsg = "";
     public boolean isSuccessful(){
-        return code==0;
+        return errorCode==0;
     }
     @Override
     public String toString() {
         return "BaseRequest{" +
-                "code=" + code +
+                "errorCode=" + errorCode +
                 ", errorMsg='" + errorMsg + '\'' +
                 ", data=" + data +
                 '}';

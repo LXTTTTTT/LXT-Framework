@@ -222,7 +222,7 @@ suspend fun <T> requestFlowResponse1(
         }
         if(response!=null){
             if (!response.isSuccessful()) {
-                throw ApiException(response.code, response.errorMsg)
+                throw ApiException(response.errorCode, response.errorMsg)
             }
         }else{
             throw OtherException(6666,"无法获取数据")
@@ -267,7 +267,7 @@ suspend fun requestFlowResponse2(
         }
         if(response!=null){
             if (!response.isSuccessful()) {
-                throw ApiException(response.code, response.errorMsg)
+                throw ApiException(response.errorCode, response.errorMsg)
             }
         }else{
             throw OtherException(6666,"无法获取数据")

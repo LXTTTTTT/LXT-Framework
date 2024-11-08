@@ -2,27 +2,38 @@ package com.lxt.framework.ui.main
 
 import android.os.Bundle
 import com.lxt.framework.common.utils.ApplicationUtils
+import com.lxt.framework.data.model.common.Status
 import com.lxt.framework.databinding.ActivityMainBinding
 import com.lxt.framework.ui.base.activity.BaseMVVMActivity
 import com.lxt.framework.ui.splash.SplashVM
 
-class MainActivity : BaseMVVMActivity<ActivityMainBinding,MainVM>() {
+class MainActivity : BaseMVVMActivity<ActivityMainBinding,MainVM>(false) {
     override fun setLayout(): Any? {return null}
     override fun beforeSetLayout() {}
     override suspend fun initDataSuspend() {}
-    private var splashVM: SplashVM? = null
     override fun initView(savedInstanceState: Bundle?) {
 
     }
 
     override fun initData() {
         super.initData()
-        splashVM = ApplicationUtils.getGlobalViewModel(SplashVM::class.java)
+        initViewModel()
+
+        viewModel.getHotkey()
+    }
+
+    fun initViewModel(){
         viewModel.text.observe(this) {
             viewBinding.text.text = it
         }
-        splashVM?.text?.observe(this) {
-            viewBinding.text2.text = it
+        viewModel.dataStatus.observe(this){
+            if(it is Status.Success){
+                viewBinding.text.text = it.data?.size.toString()
+            }else if(it is Status.Error){
+                viewModel.showToast("请求失败",0)
+            }else if(it is Status.Loading){
+                viewModel.showToast("请求中",0)
+            }
         }
     }
 

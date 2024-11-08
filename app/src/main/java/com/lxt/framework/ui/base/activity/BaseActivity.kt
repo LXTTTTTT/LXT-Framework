@@ -117,6 +117,11 @@ abstract class BaseActivity<VB:ViewBinding> : AppCompatActivity(){
         Log.e(TAG, log!!)
     }
 
+    fun logi(log: String?) {
+        Log.i(TAG, log!!)
+    }
+
+
     // 锁定页面垂直
     private fun setOrientationPortrait() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
