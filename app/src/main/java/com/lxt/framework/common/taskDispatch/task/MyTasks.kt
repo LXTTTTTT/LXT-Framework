@@ -5,8 +5,10 @@ import android.util.Log
 import com.lxt.framework.BuildConfig
 import com.lxt.framework.MainApplication
 import com.lxt.framework.common.utils.ApplicationUtils
+import com.lxt.framework.common.utils.CatchExceptionUtils
 import com.lxt.framework.common.utils.DispatcherExecutor
 import com.lxt.framework.common.utils.SystemInfoUtils
+import com.lxt.framework.data.local.database.MyDataBase
 import com.tencent.mmkv.MMKV
 import com.tencent.mmkv.MMKVLogLevel
 import java.util.concurrent.ExecutorService
@@ -98,7 +100,7 @@ class InitDatabaseTask() : Task() {
     }
 
     override fun run() {
-//        MyDataBase.getInstance()
+        MyDataBase.getInstance()
         Log.e(TAG, "初始化数据库" )
     }
 }
@@ -119,7 +121,7 @@ class InitCatchException() : Task() {
     }
 
     override fun run() {
-//        CatchExceptionUtils.getInstance().init(ApplicationUtils.getApplication())
+        CatchExceptionUtils.getInstance().init()
         Log.e(TAG, "初始化捕获异常" )
     }
 }

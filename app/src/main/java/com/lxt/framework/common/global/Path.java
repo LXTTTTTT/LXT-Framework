@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 public enum Path {
 
-    MAIN_PATH("",null, Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "XRay"),
+    MAIN_PATH("",null, Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "LXT"),
 
     DCM_PATH("dcm", MAIN_PATH),
     LOGGER_PATH("logger", MAIN_PATH),
@@ -42,7 +42,6 @@ public enum Path {
 
     private static final String TAG = "Path";
     public static void init(){
-
         Arrays.stream(values())
                 .filter(value ->
                         // 过滤条件：名称不为空且路径为空或路径不存在

@@ -11,21 +11,21 @@ import com.lxt.framework.data.model.common.Message;
 import com.lxt.framework.data.model.common.User;
 import com.lxt.framework.data.model.response.BaseResponse;
 import com.lxt.framework.data.model.response.Hotkey;
-import com.lxt.framework.data.service.MessageService;
 import com.lxt.framework.data.service.LoginService;
-import com.lxt.framework.data.service.MessageService2;
+import com.lxt.framework.data.service.MessageService;
 import com.lxt.framework.data.service.UserService;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Observable;
 import kotlin.coroutines.Continuation;
 
-public class MockDataProxy implements MessageService2, LoginService, UserService {
+public class MockDataProxy implements MessageService, LoginService, UserService {
     Context context = MainApplication.Companion.getInstance();
 
     public MockDataProxy() {
@@ -110,6 +110,22 @@ public class MockDataProxy implements MessageService2, LoginService, UserService
     @Nullable
     @Override
     public Object getHotkey(@NonNull Continuation<? super BaseResponse<List<Hotkey>>> $completion) {
+        return null;
+    }
+
+    @Override
+    public void saveUser(@NonNull User user) {
+
+    }
+
+    @Override
+    public void saveUsers(@NonNull List<User> users) {
+
+    }
+
+    @Nullable
+    @Override
+    public Object getLocalUsers(@NonNull Continuation<? super List<User>> $completion) {
         return null;
     }
 }

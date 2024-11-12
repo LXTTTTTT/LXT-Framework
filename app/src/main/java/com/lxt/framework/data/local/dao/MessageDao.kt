@@ -41,8 +41,8 @@ interface MessageDao {
     /**
      * 根据id更新数据
      */
-    @Query("UPDATE ${Constant.MESSAGE_TABLE} SET number=:number WHERE id=:id")
-    fun updateById(id: Long, number: String)
+//    @Query("UPDATE ${Constant.MESSAGE_TABLE} SET number=:number WHERE id=:id")
+//    fun updateById(id: Long, number: String)
 
     /**
      * 查询所有数据

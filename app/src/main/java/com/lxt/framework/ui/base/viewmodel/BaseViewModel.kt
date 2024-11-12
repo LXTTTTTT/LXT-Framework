@@ -3,6 +3,7 @@ package com.lxt.framework.ui.base.viewmodel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.lxt.framework.common.utils.GlobalControlUtils
 import com.lxt.framework.data.model.common.Status
@@ -18,9 +19,12 @@ abstract class BaseViewModel<D> : ViewModel() {
     val cpuDispatcher : CoroutineContext by lazy { Dispatchers.Default }
     val dataStatus : MutableLiveData<Status<D>> = MutableLiveData()  // 主要加载的数据的状态
 
-    fun launchInScope(something:()->Unit){
-        viewModelScope.launch{
-            something.invoke()
+
+    fun launchInScope(dispatcher: CoroutineContext=ioDispatcher, run:suspend ()->Unit){
+        viewModelScope.launch {
+            withContext(dispatcher){
+                run.invoke()
+            }
         }
     }
 

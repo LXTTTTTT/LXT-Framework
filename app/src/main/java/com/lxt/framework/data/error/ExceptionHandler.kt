@@ -3,6 +3,7 @@ package com.lxt.framework.data.error
 import android.net.ParseException
 import com.google.gson.JsonParseException
 import com.google.gson.stream.MalformedJsonException
+import com.lxt.framework.common.utils.GlobalControlUtils
 import org.json.JSONException
 import retrofit2.HttpException
 import java.net.ConnectException
@@ -19,6 +20,7 @@ object ExceptionHandler {
             ex = ApiException(e.errCode, e.errMsg, e)
             if (ex.errCode == ERROR.UNLOGIN.code){
                 // 登录失效
+//                GlobalControlUtils.showToast("登陆失败",0)
             }
         } else if (e is NoNetWorkException) {
 //            GlobalControlUtils.showToast("网络异常，请重试",0)

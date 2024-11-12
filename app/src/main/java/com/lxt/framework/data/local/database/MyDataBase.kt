@@ -9,17 +9,20 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.lxt.framework.MainApplication
 import com.lxt.framework.common.global.Constant
 import com.lxt.framework.data.local.dao.MessageDao
+import com.lxt.framework.data.local.dao.UserDao
 import com.lxt.framework.data.model.common.Message
+import com.lxt.framework.data.model.common.User
 
 /**
  * @date   2023/4/11 16:23
  * @desc   数据库操作类
  * 指定有哪些表，version必须指定版本，exportSchema生成一个json文件，方便排查问题，还需要在build.gradle文件中配置
  */
-@Database(entities = [Message::class], version = 1, exportSchema = false)
+@Database(entities = [Message::class,User::class], version = 1, exportSchema = false)
 abstract class MyDataBase : RoomDatabase() {
     //抽象方法或者抽象类标记
     abstract fun messageDao(): MessageDao
+    abstract fun userDao(): UserDao
     companion object {
         val TAG = "MyDataBase"
         private var dataBase: MyDataBase? = null

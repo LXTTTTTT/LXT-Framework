@@ -8,10 +8,10 @@ import com.lxt.framework.data.model.response.Hotkey
 import com.lxt.framework.data.service.LoginService
 import com.lxt.framework.data.remote.RequestInterface
 import com.lxt.framework.data.remote.RetrofitClient
-import com.lxt.framework.data.service.MessageService2
+import com.lxt.framework.data.service.MessageService
 import com.lxt.framework.data.service.UserService
 
-class DataServiceProxy : MessageService2, LoginService, UserService {
+class DataServiceProxy : MessageService, LoginService, UserService {
     val api : RequestInterface
     val db : DatabaseManager
 
@@ -42,6 +42,18 @@ class DataServiceProxy : MessageService2, LoginService, UserService {
 
     override suspend fun getHotkey(): BaseResponse<MutableList<Hotkey>> {
         return api.getHotkey()
+    }
+
+    override suspend fun getLocalUsers(): MutableList<User>? {
+        return db.getUsers()
+    }
+
+    override fun saveUser(user: User) {
+        db.insertUser(user)
+    }
+
+    override fun saveUsers(users: MutableList<User>) {
+        db.insertUsers(users)
     }
 
 }

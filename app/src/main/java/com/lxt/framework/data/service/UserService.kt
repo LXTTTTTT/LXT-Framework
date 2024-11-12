@@ -7,4 +7,7 @@ import com.lxt.framework.data.model.response.Hotkey
 interface UserService {
     suspend fun getUsers():BaseResponse<MutableList<User>>
     suspend fun getHotkey():BaseResponse<MutableList<Hotkey>>
+    suspend fun getLocalUsers():MutableList<User>?
+    fun saveUser(user: User)
+    fun saveUsers(users : MutableList<User>)
 }

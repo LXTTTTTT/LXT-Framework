@@ -40,5 +40,6 @@ public class Constant {
     public static final String DATABASE_NAME = "lxt_database";  // 数据库名称
     public static final String TABLE_VIDEO_LIST = "table_video_list";  // 视频列表缓存表
     public static final String MESSAGE_TABLE = "message_table";  // 消息数据表
+    public static final String USER_TABLE = "user_table";
 
 }
