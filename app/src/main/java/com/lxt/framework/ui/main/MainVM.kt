@@ -76,6 +76,69 @@ class MainVM : BaseViewModel<MutableList<Hotkey>>() {
         }
     }
 
+    fun test1(){
+        launchInScope {
+            val result = requestFlowConcurrent1(
+                requests = listOf({userService.getHotkey()},{userService.getHotkey()}),
+                parser = {it
+                    var result1 = "";var result2 = 0;
+                    it[0]?.let {
+                        result1 = (it.data as MutableList<Hotkey>).toString()
+                    }
+                    it[1]?.let {
+                        result2 = (it.data as MutableList<Hotkey>).size
+                    }
+                    return@requestFlowConcurrent1 "beans:$result2 / $result1"
+                },
+                errorHandler = {
+                    it.printStackTrace()
+                }
+            )
+            result?.let { text.postValue(it as String) }
+        }
+    }
+
+    fun test2(){
+        launchInScope {
+            val result = requestFlowConcurrent2(
+                requests = listOf({userService.getHotkey()},{userService.getHotkey()}),
+                parser = {it
+                    var result1 = "";var result2 = 0;
+                    it[0]?.let {
+                        result1 = it.data.toString()
+                    }
+                    it[1]?.let {
+                        result2 = it.data.size
+                    }
+                    return@requestFlowConcurrent2 "beans:$result2 / $result1"
+                },
+                errorHandler = {
+                    it.printStackTrace()
+                }
+            )
+            result?.let { text.postValue(it as String) }
+        }
+    }
+
+    fun test3(){
+        launchInScope {
+            val result = requestFlowConcurrent3(
+                request1 = {userService.getHotkey()},
+                request2 = {userService.getHotkey()},
+                parser = {a,b,c->
+                    var result1 = "";var result2 = 0;
+                    a?.let { result1=(it.data as MutableList<Hotkey>).toString() }
+                    b?.let { result2=(it.data as MutableList<Hotkey>).size }
+                    return@requestFlowConcurrent3 "beans:$result2 / $result1"
+                },
+                errorHandler = {
+                    it.printStackTrace()
+                }
+            )
+            result?.let { text.postValue(it as String) }
+        }
+    }
+
 
     override fun release() {
         loge("release")

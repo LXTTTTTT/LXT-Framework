@@ -22,6 +22,15 @@ class MainActivity : BaseMVVMActivity<ActivityMainBinding,MainVM>(false) {
     override suspend fun initDataSuspend() {}
     override fun initView(savedInstanceState: Bundle?) {
         viewBinding.test1.setOnClickListener {
+            viewModel.test1()
+        }
+        viewBinding.test2.setOnClickListener {
+            viewModel.test2()
+        }
+        viewBinding.test3.setOnClickListener {
+            viewModel.test3()
+        }
+        viewBinding.test4.setOnClickListener {
             viewModel.combineData()
         }
     }

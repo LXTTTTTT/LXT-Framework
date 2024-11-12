@@ -74,9 +74,8 @@ suspend fun requestFlowConcurrent1(
     val flows = requests.map { request ->
         requestFlowResponse2(requestBefore, requestAfter, request, requestErrorHandler)
     }
-//    combine(flows){ results ->
     combine(*flows.toTypedArray()){ results ->
-        Log.e(TAG, "执行数据处理" )
+        Log.e(TAG, "执行数据处理1")
         for ((index, baseResponse) in results.withIndex()) {
             Log.i(TAG, "$index : $baseResponse" )
         }
@@ -84,28 +83,28 @@ suspend fun requestFlowConcurrent1(
     }
         .flowOn(Dispatchers.IO)
         .onStart {
-            Log.e(TAG, "启动任务")
+            Log.e(TAG, "任务启动1")
             before?.invoke()
         }
         .onCompletion {
-            if(it==null){
-                Log.e(TAG, "请求完成")
-                after?.invoke()
-            }else{
-                Log.e(TAG, "发生异常")
-            }
+            Log.e(TAG, "任务完成1")
+            after?.invoke()
+//            if(it==null){
+//                Log.e(TAG, "任务完成1")
+//                after?.invoke()
+//            }else{
+//                Log.e(TAG, "任务异常1")
+//            }
         }
         .flowOn(Dispatchers.Main)
         .catch {
-            Log.e(TAG, "任务异常")
+            Log.e(TAG, "任务异常1")
             errorHandler?.invoke(it)
         }
         .collect {
+            Log.e(TAG, "输出结果1: ${it.toString()}", )
             result = it
         }
-//    combineFlow(flows,parser,before,after,errorHandler).collect {
-//        result = it
-//    }
     return result
 }
 
@@ -125,7 +124,7 @@ suspend fun <T> requestFlowConcurrent2(
         requestFlowResponse1(requestBefore, requestAfter, request, requestErrorHandler)
     }
     combine(flows){ results ->
-        Log.e(TAG, "执行数据处理" )
+        Log.e(TAG, "执行数据处理2")
         for ((index, baseResponse) in results.withIndex()) {
             Log.i(TAG, "$index : $baseResponse" )
         }
@@ -133,27 +132,31 @@ suspend fun <T> requestFlowConcurrent2(
     }
         .flowOn(Dispatchers.IO)
         .onStart {
-            Log.e(TAG, "启动任务")
+            Log.e(TAG, "任务启动2")
             before?.invoke()
         }
         .onCompletion {
-            if(it==null){
-                Log.e(TAG, "请求完成")
-                after?.invoke()
-            }else{
-                Log.e(TAG, "发生异常")
-            }
+            Log.e(TAG, "任务完成2")
+            after?.invoke()
+//            if(it==null){
+//                Log.e(TAG, "任务完成2")
+//                after?.invoke()
+//            }else{
+//                Log.e(TAG, "任务异常2")
+//            }
         }
         .flowOn(Dispatchers.Main)
         .catch {
-            Log.e(TAG, "任务异常")
+            Log.e(TAG, "任务异常2")
             errorHandler?.invoke(it)
         }
         .collect {
+            Log.e(TAG, "输出结果2: ${it.toString()}", )
             result = it
         }
     return result
 }
+
 
 // 简单请求多任务
 suspend fun <T> requestFlowConcurrent3(
@@ -177,28 +180,31 @@ suspend fun <T> requestFlowConcurrent3(
         requestFlowResponse2(requestBefore, requestAfter, request3, requestErrorHandler)
     }else{flow { emit(null) }}
     combine(flow1,flow2,flow3){ a,b,c ->
-        Log.i(TAG, "执行数据处理\na:$a \nb:$b \nc:$c" )
+        Log.i(TAG, "执行数据处理3\na:$a \nb:$b \nc:$c" )
         parser.invoke(a,b,c)
     }
         .flowOn(Dispatchers.IO)
         .onStart {
-            Log.e(TAG, "启动任务")
+            Log.e(TAG, "任务启动3")
             before?.invoke()
         }
         .onCompletion {
-            if(it==null){
-                Log.e(TAG, "请求完成")
-                after?.invoke()
-            }else{
-                Log.e(TAG, "发生异常")
-            }
+            Log.e(TAG, "任务完成3")
+            after?.invoke()
+//            if(it==null){
+//                Log.e(TAG, "任务完成3")
+//                after?.invoke()
+//            }else{
+//                Log.e(TAG, "任务异常3")
+//            }
         }
         .flowOn(Dispatchers.Main)
         .catch {
-            Log.e(TAG, "任务异常")
+            Log.e(TAG, "任务异常3")
             errorHandler?.invoke(it)
         }
         .collect {
+            Log.e(TAG, "输出结果3: ${it.toString()}", )
             result = it
         }
     return result
@@ -226,25 +232,27 @@ suspend fun <L:Any?, X:Any?, T:Any?, R> requestFlowConcurrent4(
         requestFlowResponse3(requestBefore, requestAfter, request3, requestErrorHandler)
     }else{flow { emit(null) }}
     combine(flow1,flow2,flow3){ l,x,t ->
-        Log.i(TAG, "执行数据处理\nl:$l \nx:$x \nt:$t" )
+        Log.i(TAG, "执行数据处理4\nl:$l \nx:$x \nt:$t" )
         parser.invoke(l,x,t)
     }
         .flowOn(Dispatchers.IO)
         .onStart {
-            Log.e(TAG, "启动任务4")
+            Log.e(TAG, "任务启动4")
             before?.invoke()
         }
         .onCompletion {
-            if(it==null){
-                Log.e(TAG, "任务成功4")
-                after?.invoke()
-            }else{
-                Log.e(TAG, "任务异常4")
-            }
+            Log.e(TAG, "任务完成4")
+            after?.invoke()
+//            if(it==null){
+//                Log.e(TAG, "任务完成4")
+//                after?.invoke()
+//            }else{
+//                Log.e(TAG, "任务异常4")
+//            }
         }
         .flowOn(Dispatchers.Main)
         .catch {
-            Log.e(TAG, "任务异常")
+            Log.e(TAG, "任务异常4")
             errorHandler?.invoke(it)
         }
         .collect {
@@ -264,10 +272,11 @@ suspend fun <T> requestFlowResponse1(
     after: (() -> Unit)? = null,  // 后置工作
     request: suspend () -> BaseResponse<T>?,  // 请求
     errorHandler: ((Int?, String?) -> Unit)? = null,  // 错误处理
+    timeout: Long = 10*1000
 ): Flow<BaseResponse<T>?> {
     val flow = flow {
         // 设置10秒超时
-        val response = withTimeout(10 * 1000) {
+        val response = withTimeout(timeout) {
             request()
         }
         if(response!=null){
@@ -281,22 +290,23 @@ suspend fun <T> requestFlowResponse1(
     }
         .flowOn(Dispatchers.IO)
         .onStart {
-            Log.e(TAG, "执行请求")
+            Log.e(TAG, "请求数据1")
             before?.invoke()  // 前置准备，一般是弹出加载框
         }
         // 请求完成：成功/失败
         .onCompletion {
+            Log.e(TAG, "请求完成1")
             after?.invoke()
 //            if(it==null){
-//                Log.e(TAG, "请求完成")
+//                Log.e(TAG, "请求完成1")
 //                after?.invoke()
 //            }else{
-//                Log.e(TAG, "发生异常")
+//                Log.e(TAG, "请求异常1")
 //            }
         }
         // 捕获异常
         .catch { e ->
-            Log.e(TAG, "请求异常")
+            Log.e(TAG, "请求异常1")
             e.printStackTrace()
             val exception = ExceptionHandler.handleException(e)
             errorHandler?.invoke(exception.errCode, exception.errMsg)
@@ -310,10 +320,11 @@ suspend fun requestFlowResponse2(
     after: (() -> Unit)? = null,  // 后置工作
     request: suspend () -> BaseResponse<out Any>?,  // 请求
     errorHandler: ((Int?, String?) -> Unit)? = null,  // 错误处理
+    timeout: Long = 10*1000
 ): Flow<BaseResponse<out Any>?> {
     val flow = flow {
         // 设置10秒超时
-        val response = withTimeout(10 * 1000) {
+        val response = withTimeout(timeout) {
             request()
         }
         if(response!=null){
@@ -327,22 +338,24 @@ suspend fun requestFlowResponse2(
     }
         .flowOn(Dispatchers.IO)
         .onStart {
-            Log.e(TAG, "执行请求")
+            Log.e(TAG, "请求数据2")
             before?.invoke()  // 前置准备，一般是弹出加载框
         }
         // 请求完成：成功/失败
         .onCompletion {
-            if(it==null){
-                Log.e(TAG, "请求完成")
-                after?.invoke()
-            }else{
-                Log.e(TAG, "发生异常")
-            }
+            Log.e(TAG, "请求完成2")
+            after?.invoke()
+//            if(it==null){
+//                Log.e(TAG, "请求完成2")
+//                after?.invoke()
+//            }else{
+//                Log.e(TAG, "请求异常2")
+//            }
         }
         .flowOn(Dispatchers.Main)
         // 捕获异常
         .catch { e ->
-            Log.e(TAG, "请求异常")
+            Log.e(TAG, "请求异常2")
             e.printStackTrace()
             val exception = ExceptionHandler.handleException(e)
             errorHandler?.invoke(exception.errCode, exception.errMsg)
@@ -355,10 +368,11 @@ suspend fun <T:Any?> requestFlowResponse3(
     after: (() -> Unit)? = null,  // 后置工作
     request: suspend () -> T,  // 请求
     errorHandler: ((Int?, String?) -> Unit)? = null,  // 错误处理
+    timeout: Long = 10*1000
 ): Flow<T> {
     val flow = flow {
         // 设置10秒超时
-        val response = withTimeout(10 * 1000) {
+        val response = withTimeout(timeout) {
             request()
         }
         if(response!=null){
@@ -369,22 +383,24 @@ suspend fun <T:Any?> requestFlowResponse3(
     }
         .flowOn(Dispatchers.IO)
         .onStart {
-            Log.e(TAG, "获取数据")
+            Log.e(TAG, "请求数据3")
             before?.invoke()  // 前置准备，一般是弹出加载框
         }
         // 请求完成：成功/失败
         .onCompletion {
-            if(it==null){
-                Log.e(TAG, "获取成功")
-                after?.invoke()
-            }else{
-                Log.e(TAG, "获取异常")
-            }
+            Log.e(TAG, "请求完成3")
+            after?.invoke()
+//            if(it==null){
+//                Log.e(TAG, "请求成功3")
+//                after?.invoke()
+//            }else{
+//                Log.e(TAG, "请求异常3")
+//            }
         }
         .flowOn(Dispatchers.Main)
         // 捕获异常
         .catch { e ->
-            Log.e(TAG, "获取错误")
+            Log.e(TAG, "请求错误3")
             e.printStackTrace()
             val exception = ExceptionHandler.handleException(e)
             errorHandler?.invoke(exception.errCode, exception.errMsg)
@@ -393,15 +409,19 @@ suspend fun <T:Any?> requestFlowResponse3(
 }
 
 
-fun combineFlow(
-    flows:List<Flow<BaseResponse<out Any>?>>,
-    parser: (Array<BaseResponse<out Any>?>) -> Any?,
+fun <T> combineFlow(
+    flows:List<Flow<BaseResponse<T>?>>,
+    parser: (Array<BaseResponse<T>?>) -> Any?,
     before: (() -> Unit)?=null,
     after: (() -> Unit)?=null,
     errorHandler: ((Throwable) -> Unit)?=null
 ):Flow<Any?>{
-    return combine(flows){
-        parser.invoke(it)
+    return combine(flows){ result ->
+        Log.e(TAG, "执行数据处理" )
+        for ((index, baseResponse) in result.withIndex()) {
+            Log.i(TAG, "$index : $baseResponse" )
+        }
+        parser.invoke(result)
     }
         .flowOn(Dispatchers.IO)
         .onStart {
@@ -422,9 +442,3 @@ fun combineFlow(
             errorHandler?.invoke(it)
         }
 }
-
-
-
-
-
-
